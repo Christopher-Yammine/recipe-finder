@@ -42,10 +42,10 @@ jobs:
           fi
           cd /recipe-project/recipe-finder
           if [ -d ".git" ]; then
-            git pull https://${{ secrets.GH_TOKEN }}@github.com/your-username/your-repo.git main
+            git pull https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git main
           else
             git init
-            git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/your-username/your-repo.git
+            git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git
             git pull origin main
           fi
           # any other deployment commands
