@@ -3,50 +3,50 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2  # specify your region
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2 # specify your region
 
-    - name: Install SSH client
-      run: sudo apt-get install -y openssh-client
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
 
-    - name: Add SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-    - name: Verify SSH connection
-      run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'echo "SSH connection successful"'
+      - name: Verify SSH connection
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'echo "SSH connection successful"'
 
-    - name: Deploy application
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          # Check if directory exists, if not create it
-          if [ ! -d "/recipe-project/recipe-finder" ]; then
-            mkdir -p /recipe-project/recipe-finder
-            git clone https://${{ secrets.GH_TOKEN }}@github.com/your-username/your-repo.git /recipe-project/recipe-finder
-          fi
-          cd /recipe-project/recipe-finder
-          if [ -d ".git" ]; then
-            git pull https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git main
-          else
-            git init
-            git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git
-            git pull origin main
-          fi
-          # any other deployment commands
-        EOF
+      - name: Deploy application
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            # Check if directory exists, if not create it
+            if [ ! -d "/recipe-project/recipe-finder" ]; then
+              mkdir -p /recipe-project/recipe-finder
+              git clone https://${{ secrets.GH_TOKEN }}@github.com/your-username/your-repo.git /recipe-project/recipe-finder
+            fi
+            cd /recipe-project/recipe-finder
+            if [ -d ".git" ]; then
+              git pull https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git main
+            else
+              git init
+              git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git
+              git pull origin main
+            fi
+            # any other deployment commands
+          EOF
