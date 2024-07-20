@@ -33,23 +33,15 @@ jobs:
       - name: Checkout the files
         uses: actions/checkout@v4
 
-      - name: Deployment
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{secrets.TARGET}}
-
       - name: Run Streamlit App on EC2
         run: |
-          # ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-          #   cd ${{ secrets.TARGET }}
-          #   # Install dependencies
-          #   pip install -r requirements.txt
-          #   # Kill any existing Streamlit processes
-          #   pkill -f streamlit || true
-          #   # Run the Streamlit app in the background
-          #   nohup streamlit run app.py --server.port 8501 --server.headless true > streamlit.log 2>&1 &
-          # EOF
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+            cd ${{ secrets.TARGET }}
+            # Install dependencies
+            pip install -r requirements.txt
+            # Kill any existing Streamlit processes
+            pkill -f streamlit || true
+            # Run the Streamlit app in the background
+            nohup streamlit run app.py --server.port 8501 --server.headless true > streamlit.log 2>&1 &
+          EOF
           echo "here";
