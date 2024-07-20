@@ -47,13 +47,6 @@ jobs:
 
       - name: Run Streamlit App on EC2
         run: |
-            ls 
-            if [ ! -d "/recipe-project/recipe-finder" ]; then
-            mkdir -p /recipe-project/recipe-finder
-            git clone https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git /recipe-project/recipe-finder
-            fi
-            cd /recipe-project/recipe-finder
-            if [ -d ".git" ]; then
             git pull https://${{ secrets.GH_TOKEN }}@github.com/chrisyammine98@gmail.com/recipe-finder.git main
             # Install dependencies
             pip install -r requirements.txt
