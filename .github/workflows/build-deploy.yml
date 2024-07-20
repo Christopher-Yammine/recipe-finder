@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Streamlit App on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+       
             cd ${{ secrets.TARGET }}
             # Install dependencies
             pip install -r requirements.txt
@@ -55,5 +55,5 @@ jobs:
             pkill -f streamlit || true
             # Run the Streamlit app in the background
             nohup streamlit run app.py --server.port 8501 --server.headless true > streamlit.log 2>&1 &
-          EOF
-          echo "here";
+
+
