@@ -52,7 +52,9 @@ jobs:
             pip install -r requirements.txt
             # Kill any existing Streamlit processes
             pkill -f streamlit || true
+            echo "streamlit instance killed"
             # Run the Streamlit app in the background
+            echo "running streamlit app"
             nohup streamlit run app.py --server.port 8501 --server.headless true > streamlit.log 2>&1 &
 
 
