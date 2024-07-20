@@ -46,11 +46,11 @@ jobs:
 
       - name: Deploy and Run Streamlit App on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
-            cd /path/to/your/project
+     
             git pull https://${{ secrets.GH_TOKEN }}@github.com/Christopher-Yammine/recipe-finder.git main
             pip install -r requirements.txt
             pkill -f streamlit || true
-            nohup streamlit run app.py &>/dev/null &
-            echo "Streamlit app started successfully"
-          EOF
+            nohup streamlit run app.py > streamlit_output.log 2>&1 &
+            sleep 5 
+            grep "Network URL" streamlit_output.log
+
