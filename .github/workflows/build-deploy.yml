@@ -48,7 +48,7 @@ jobs:
       - name: Run Streamlit App on EC2
         run: |
        
-            cd ${{ secrets.TARGET }}
+            cd recipe-project/recipe-finder
             # Install dependencies
             pip install -r requirements.txt
             # Kill any existing Streamlit processes
