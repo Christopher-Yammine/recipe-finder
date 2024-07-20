@@ -52,5 +52,5 @@ jobs:
             pkill -f streamlit || true
             nohup streamlit run app.py > streamlit_output.log 2>&1 &
             sleep 5 
-            grep "Network URL" streamlit_output.log
+            grep "External URL" streamlit_output.log
 
